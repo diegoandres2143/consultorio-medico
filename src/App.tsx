@@ -90,7 +90,7 @@ function App() {
   return (
     <div className="min-h-screen bg-[#F2F2F2]">
       {/* Navigation */}
-      <nav className="bg-[#023E73] text-white fixed w-full z-50" data-aos="fade-right">
+      <nav className="bg-[#023E73] text-white fixed w-full z-50" data-aos="zoom-out-left">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
