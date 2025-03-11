@@ -333,7 +333,7 @@ function App() {
           </p>
           <p className="flex items-center">
             <MapPin className="mr-2 h-5 w-5" />
-            Cra 45 Nº 83-34, Barrio Manrique, Medellín - Colombia
+            Cra 45 # 83-34, Barrio Manrique, Medellín - Colombia
           </p>
           <div className="flex items-start">
             <Clock className="mr-2 h-5 w-5 mt-1" />
