@@ -35,6 +35,11 @@ const services = [
     title: "Procedimientos menores",
     description: "Servicios como inyectología, lavado de oídos, manejo de uñas encarnadas, cauterización de verrugas y retiro de implantes anticonceptivos.",
     icon: "💉"
+  },
+  {
+    title: "Asesorías médico-legales",
+    description: "Ofrecemos orientación personalizada en Derechos de petición y tutelas.",
+    icon: "⚖️"
   }
 ];
 
@@ -53,6 +58,21 @@ const faqs = [
     question: "¿Cómo puedo pagar la consulta?",
     answer: "El pago se realiza directamente en efectivo, con el médico en el consultorio o por transferencia bancaria por medio de NEQUI o Bancolombia.",
     icon: "💳"
+  },
+  {
+    question: "¿Puedo cancelar o reprogramar mi cita?",
+    answer: "Sí, puedes cancelar o reprogramar tu cita con al menos 24 horas de anticipación. De lo contrario, se cobrará el valor de la consulta.",
+    icon: "📅"
+  },
+  {
+    question: "¿Qué debo llevar a la consulta?",
+    answer: "Es importante llevar tu documento de identidad, carné de EPS, exámenes médicos recientes y la historia clínica de tratamientos previos.",
+    icon: "📋"
+  },
+  {
+    question: "¿Dónde está ubicado el consultorio?",
+    answer: "Estamos ubicados dentro del “Centro médico y odontológico clásico.”",
+    icon: "📍"
   }
 ];
 
@@ -85,19 +105,17 @@ function App() {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-
-
   return (
-    <div className="min-h-screen bg-[#F2F2F2]">
-      {/* Navigation */}
-      <nav className="bg-[#023E73] text-white fixed w-full z-50" data-aos="zoom-out-left">
+    <div className="min-h-screen bg-[#F2F2F2] overflow-x-hidden">
+       {/* Navigation */}
+       <nav className="bg-[#023E73] text-white fixed w-full z-50" data-aos="fade-right">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <div className="bg-white p-0 rounded-full">
                 <img src="/Logo Nilson.png" alt="Logo Nilson" className="h-12 w-12" />
               </div>
-              <div className="text-xl font-bold ml-2">Dr. Garcés</div>
+              <div className="text-xl font-bold ml-2">Dr. Garces</div>
             </div>
             <button 
               className="md:hidden"
@@ -123,8 +141,8 @@ function App() {
         <div className="container mx-auto px-4 py-20">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 space-y-6">
-              <h1 className="text-3xl md:text-5xl font-bold">Consultorio Médico <br /> Dr. Garcés</h1>
-              <p className="text-xl" style={{ fontStyle: 'italic' }}>Servimos con Dignidad y Honestidad.</p>
+              <h1 className="text-3xl md:text-5xl font-bold">Consultorio Médico <br /> Dr. Garces</h1>
+              <p className="text-xl italic">Servimos con Dignidad y Honestidad.</p>
               <a 
                 href="https://wa.me/573002171407"
                 className="inline-block bg-[#0FAEBF] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#32628C] transition duration-300"
@@ -172,23 +190,30 @@ function App() {
       <div className="flex justify-center">
         <img 
           src="/Foto Nilson FINAL.jpeg" 
-          alt="Doctor Nilson Jesús Garcés Córdoba" 
+          alt="Doctor Nilson Jesús Garces Córdoba" 
           className="rounded-lg shadow-xl w-80 h-auto"
         />
       </div>
       <div className="space-y-6">
-        <p className="text-xl"><strong>Nombre:</strong><br /> <br /><li>Nilson Jesús Garcés Córdoba</li></p>
-        <p className="text-xl"><strong>Estudios:</strong></p>
-        <ul className="list-disc list-inside space-y-2">
-          <li>Médico General - Universidad del Sinú</li>
-          <li>Especialista en Gerencia de la calidad y Auditor en salud - Universidad Cooperativa de Colombia</li>
-          <li>Especialista en Derecho Médico (En Curso) - ¿Universidad? (Por definir)</li>
-        </ul>
-      </div>
-    </div>
-    <hr className="my-12 border-t-2 border-[#0FAEBF]" />
-    <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-      <div>
+  <p className="text-xl"><strong>Nilson Jesús Garces Córdoba</strong></p>
+  <p className="text-l">
+    Médico comprometido con el bienestar de sus pacientes, ofreciendo un enfoque integral que combina ciencia, ética y empatía. 
+    Con una sólida formación y experiencia en el campo de la medicina, su objetivo es brindar diagnósticos precisos y tratamientos 
+    efectivos, asegurando siempre un trato humano y cercano. Su vocación por la salud lo impulsa a mantenerse en constante 
+    actualización para ofrecer la mejor atención posible.
+  </p>
+  <p className="text-xl"><strong>Estudios:</strong></p>
+  <ul className="list-disc list-inside space-y-2">
+    <li>Médico General - Universidad del Sinú</li>
+    <li>Especialista en Gerencia de la calidad y Auditor en salud - Universidad Cooperativa de Colombia</li>
+    <li>Especialista en Derecho Médico (En Curso) - Universidad Cooperativa de Colombia</li>
+  </ul>
+</div>
+</div>
+<hr className="my-12 border-t-2 border-[#0FAEBF]" />
+<h3 className="text-2xl font-semibold mb-8 text-center text-[#0FAEBF]">Contamos con los siguientes certificados:</h3>
+<div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+  <div>
         <div className="text-4xl mb-4">📄</div>
         <h3 className="text-xl font-semibold">Número de tarjeta profesional</h3>
       </div>
@@ -351,7 +376,7 @@ function App() {
       </div>
     </div>
     <div className="text-center mt-8 pt-8 border-t border-black-700">
-      <p>&copy; 2025 Consultorio Médico - Dr. Garcés. Todos los derechos reservados <br /><br /> Elaborado por Diego Andrés Candamil Puerta</p>
+      <p>&copy; 2025 Consultorio Médico - Dr. Garces. Todos los derechos reservados <br /><br /> Elaborado por Diego Andrés Candamil Puerta</p>
     </div>
   </div>
 </footer>
