@@ -312,12 +312,12 @@ function App() {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[
-                  { src: "/public/F1.jpg", alt: "Corredor" },
-                  { src: "/public/F5.jpg", alt: "Consultorio por fuera" },
-                  { src: "/public/F3.jpg", alt: "Sala de espera" },
-                  { src: "/public/F4.jpg", alt: "Recepción" },
-                  { src: "/public/F6.jpg", alt: "Vista exterior" },
-                  { src: "/public/F2.jpg", alt: "Consultorio por dentro" },
+                  { src: "/F1.jpg", alt: "Corredor" },
+                  { src: "/F5.jpg", alt: "Consultorio por fuera" },
+                  { src: "/F3.jpg", alt: "Sala de espera" },
+                  { src: "/F4.jpg", alt: "Recepción" },
+                  { src: "/F6.jpg", alt: "Vista exterior" },
+                  { src: "/F2.jpg", alt: "Consultorio por dentro" },
                   
                 ].map((image, index) => (
                   <div key={index} className="relative group">
