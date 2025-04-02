@@ -569,7 +569,7 @@ function App() {
                 </div>
               </div>
               <div className="mt-4 flex space-x-4">
-                <a href="#" className="hover:text-[#0FAEBF]">
+                <a href="https://www.instagram.com/consultoriomedicodrgarces/" className="hover:text-[#0FAEBF]">
                   <Instagram />
                 </a>
                 <a href="#" className="hover:text-[#0FAEBF]">
