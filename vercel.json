@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "http://:path*",
+      "destination": "https://consultoriomedicodoctorgarces.com/:path*",
+      "permanent": true
+    }
+  ]
+}
