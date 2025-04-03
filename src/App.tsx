@@ -572,7 +572,7 @@ function App() {
                 <a href="https://www.instagram.com/consultoriomedicodrgarces/" className="hover:text-[#0FAEBF]">
                   <Instagram />
                 </a>
-                <a href="#" className="hover:text-[#0FAEBF]">
+                <a href="https://m.facebook.com/61573190233989/" className="hover:text-[#0FAEBF]">
                   <Facebook />
                 </a>
               </div>
