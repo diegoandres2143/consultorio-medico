@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import {
   Menu,
   Phone,
-  Clock,
-  MapPin,
+  //Clock,
+  //MapPin,
   Instagram,
   Facebook,
   ChevronDown,
@@ -183,14 +183,14 @@ function App() {
                     href="#conocenos"
                     className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
                   >
-                    Conócenos
+                    {/*Conócenos
                   </a>
                 </li>
                 <li className="mb-2 md:mb-0">
                   <a
                     href="#servicios"
                     className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
-                  >
+                  >*/}
                     Servicios
                   </a>
                 </li>
@@ -300,8 +300,8 @@ function App() {
             </div>
           </div>
 
-          {/* 
           {/* Conócenos */}
+          {/*
           <section
             id="conocenos"
             className="py-20 bg-gradient-to-b from-[#F2F2F2] to-[#E6E6E6]"
@@ -336,9 +336,9 @@ function App() {
                 ))}
               </div>
             </div>
-          </section> 
+          </section>
           */}
-
+          
           {/* Biografía */}
           <section
             id="biografia"
@@ -543,73 +543,84 @@ function App() {
       >
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-xl font-semibold mb-4">
-                Información de Contacto
-              </h3>
-              <div className="space-y-2">
-                <p className="flex items-center">
-                  <Phone className="mr-2 h-5 w-5" />
-                  <a
-                    href="https://wa.me/573002171407"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    +57 300 217 1407
-                  </a>
-                </p>
-                {/* <p className="flex items-center">
-                  <MapPin className="mr-2 h-5 w-5" />
-                  Cra 45 # 83-34, Barrio Manrique, Medellín - Colombia
-                </p> */}
+            {/* Información de Contacto */}
+<div>
+  <h3 className="text-xl font-semibold mb-4">
+    Información de Contacto
+  </h3>
+  <div className="space-y-2">
+    <p className="flex items-center">
+      <Phone className="mr-2 h-5 w-5" />
+      <a
+        href="https://wa.me/573002171407"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        +57 300 217 1407
+      </a>
+    </p>
+    {/* Comentado porque actualmente no hay sede presencial */}
+    {/*
+    <p className="flex items-center">
+      <MapPin className="mr-2 h-5 w-5" />
+      Cra 45 # 83-34, Barrio Manrique, Medellín - Colombia
+    </p>
+    */}
+    {/* Comentado porque actualmente no hay sede presencial */}
+    {/*
+    <div className="flex items-start">
+      <Clock className="mr-2 h-5 w-5 mt-1" />
+      <div>
+        <p>Lunes a Viernes: 4:30 PM - 9:00 PM</p>
+        <p>Sábados: 8:00 AM - 1:00 PM</p>
+      </div>
+    </div>
+    */}
+  </div>
+  <div className="mt-4 flex space-x-4">
+    <a
+      href="https://www.instagram.com/consultoriomedicodrgarces/"
+      className="hover:text-[#0FAEBF] flex items-center space-x-2"
+    >
+      <Instagram />
+      <span>Instagram</span>
+    </a>
+    <a
+      href="https://m.facebook.com/61573190233989/"
+      className="hover:text-[#0FAEBF] flex items-center space-x-2"
+    >
+      <Facebook />
+      <span>Facebook</span>
+    </a>
+  </div>
+</div>
 
-                <p className="flex items-center">
-                  <MapPin className="mr-2 h-5 w-5" />
-                  Actualmente solo prestamos servicio domiciliario
-                </p> 
-                
-                <div className="flex items-start">
-                  <Clock className="mr-2 h-5 w-5 mt-1" />
-                  <div>
-                    <p>Lunes a Viernes: 4:30 PM - 9:00 PM</p>
-                    <p>Sábados: 8:00 AM - 1:00 PM</p>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 flex space-x-4">
-                <a href="https://www.instagram.com/consultoriomedicodrgarces/" className="hover:text-[#0FAEBF]">
-                  <Instagram />
-                </a>
-                <a href="https://m.facebook.com/61573190233989/" className="hover:text-[#0FAEBF]">
-                  <Facebook />
-                </a>
-              </div>
-            </div>
-            {/* <div>
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.8754327425547!2d-75.5645!3d6.2786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e442f1c3c3c3c3d%3A0x3c3c3c3c3c3c3c3c!2sCra%2045%20%2383-34%2C%20Medell%C3%ADn%2C%20Antioquia!5e0!3m2!1ses!2sco!4v1620000000000!5m2!1ses!2sco"
-                width="100%"
-                height="250"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="rounded-lg"
-              ></iframe>
-              <div className="text-center mt-4">
-                <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=Cra+45+%2383-34%2C+Medell%C3%ADn%2C+Antioquia"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-[#0FAEBF] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#32628C] transition duration-300"
-                >
-                  ¿Cómo llegar?
-                </a>
-              </div>
-            </div>
-          </div>
+{/* Mapa de Google - Comentado porque actualmente no hay sede presencial */}
+{/*
+<div>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.8754327425547!2d-75.5645!3d6.2786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e442f1c3c3c3c3d%3A0x3c3c3c3c3c3c3c3c!2sCra%2045%20%2383-34%2C%20Medell%C3%ADn%2C%20Antioquia!5e0!3m2!1ses!2sco!4v1620000000000!5m2!1ses!2sco"
+    width="100%"
+    height="250"
+    style={{ border: 0 }}
+    allowFullScreen
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+    className="rounded-lg"
+  ></iframe>
+  <div className="text-center mt-4">
+    <a
+      href="https://www.google.com/maps/dir/?api=1&destination=Cra+45+%2383-34%2C+Medell%C3%ADn%2C+Antioquia"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-block bg-[#0FAEBF] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#32628C] transition duration-300"
+    >
+      ¿Cómo llegar?
+    </a>
+  </div>
+</div>
 */}
-          
+          </div>
           <div className="text-center mt-8 pt-8 border-t border-black-700">
             <p>
               &copy; 2025 Consultorio Médico - Dr. Garces. Todos los derechos
