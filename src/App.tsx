@@ -300,7 +300,7 @@ function App() {
             </div>
           </div>
 
-        /*  
+          {/* 
           {/* Conócenos */}
           <section
             id="conocenos"
@@ -337,7 +337,7 @@ function App() {
               </div>
             </div>
           </section> 
-          */
+          */}
 
           {/* Biografía */}
           <section
@@ -558,10 +558,10 @@ function App() {
                     +57 300 217 1407
                   </a>
                 </p>
-                /* <p className="flex items-center">
+                {/* <p className="flex items-center">
                   <MapPin className="mr-2 h-5 w-5" />
                   Cra 45 # 83-34, Barrio Manrique, Medellín - Colombia
-                </p> */
+                </p> */}
 
                 <p className="flex items-center">
                   <MapPin className="mr-2 h-5 w-5" />
@@ -585,7 +585,7 @@ function App() {
                 </a>
               </div>
             </div>
-            /* <div>
+            {/* <div>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.8754327425547!2d-75.5645!3d6.2786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e442f1c3c3c3c3d%3A0x3c3c3c3c3c3c3c3c!2sCra%2045%20%2383-34%2C%20Medell%C3%ADn%2C%20Antioquia!5e0!3m2!1ses!2sco!4v1620000000000!5m2!1ses!2sco"
                 width="100%"
@@ -608,7 +608,7 @@ function App() {
               </div>
             </div>
           </div>
-*/
+*/}
           
           <div className="text-center mt-8 pt-8 border-t border-black-700">
             <p>
