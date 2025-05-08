@@ -569,12 +569,20 @@ function App() {
                 </div>
               </div>
               <div className="mt-4 flex space-x-4">
-                <a href="https://www.instagram.com/consultoriomedicodrgarces/" className="hover:text-[#0FAEBF]">
-                  <Instagram />
-                </a>
-                <a href="https://m.facebook.com/61573190233989/" className="hover:text-[#0FAEBF]">
-                  <Facebook />
-                </a>
+                <a
+      href="https://www.instagram.com/consultoriomedicodrgarces/"
+      className="hover:text-[#0FAEBF] flex items-center space-x-2"
+    >
+      <Instagram />
+      <span>Instagram</span>
+    </a>
+    <a
+      href="https://m.facebook.com/61573190233989/"
+      className="hover:text-[#0FAEBF] flex items-center space-x-2"
+    >
+      <Facebook />
+      <span>Facebook</span>
+    </a>
               </div>
             </div>
             <div>
