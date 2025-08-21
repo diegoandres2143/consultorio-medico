@@ -3,7 +3,6 @@ import {
   Menu,
   Phone,
   Clock,
-  MapPin,
   Instagram,
   Facebook,
   ChevronDown,
@@ -210,6 +209,14 @@ function App() {
                     FAQ
                   </a>
                 </li>
+                <li className="mb-2 md:mb-0">
+                  <a
+                    href="#escribenos"
+                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
+                  >
+                    Escríbenos
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -262,14 +269,13 @@ function App() {
               Descripción
             </h3>
             <p className="text-gray-700">
-              Brindamos atención médica
-              integral y de calidad en Medellín, Colombia. Ofrecemos servicios
-              especializados como consultas generales, asesorías
-              anticonceptivas, manejo de infecciones de transmisión sexual,
-              procedimientos menores y atención médica domiciliaria. Nuestro
-              compromiso es garantizar diagnósticos precisos, tratamientos
-              efectivos y un trato humano y profesional. Agenda tu cita
-              fácilmente y prioriza tu salud con nosotros.
+              Brindamos atención médica integral y de calidad en Medellín,
+              Colombia. Ofrecemos servicios especializados como consultas
+              generales, asesorías anticonceptivas, manejo de infecciones de
+              transmisión sexual, procedimientos menores y atención médica
+              domiciliaria. Nuestro compromiso es garantizar diagnósticos
+              precisos, tratamientos efectivos y un trato humano y profesional.
+              Agenda tu cita fácilmente y prioriza tu salud con nosotros.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-12">
@@ -300,7 +306,7 @@ function App() {
             </div>
           </div>
 
-          {/* Conócenos */}
+          {/* Conócenos
           <section
             id="conocenos"
             className="py-20 bg-gradient-to-b from-[#F2F2F2] to-[#E6E6E6]"
@@ -318,7 +324,6 @@ function App() {
                   { src: "/F4.jpg", alt: "Recepción" },
                   { src: "/F6.jpg", alt: "Vista exterior" },
                   { src: "/F2.jpg", alt: "Consultorio por dentro" },
-                  
                 ].map((image, index) => (
                   <div key={index} className="relative group">
                     <img
@@ -335,7 +340,7 @@ function App() {
                 ))}
               </div>
             </div>
-          </section>
+          </section> */}
 
           {/* Biografía */}
           <section
@@ -498,6 +503,122 @@ function App() {
         </div>
       </section>
 
+      {/* Escríbenos */}
+<section
+  id="escribenos"
+  className="py-20 bg-gradient-to-b from-[#E6E6E6] to-[#F2F2F2]"
+  data-aos="fade-up"
+>
+  <div className="container mx-auto px-4">
+    <h2 className="text-4xl font-bold text-center mb-12 text-[#023E73]">
+      Escríbenos
+    </h2>
+    <div className="grid md:grid-cols-2 gap-12 items-center">
+      {/* Texto a la izquierda */}
+      <div className="space-y-6">
+        <h3 className="text-2xl font-semibold text-[#32628C]">
+          Escríbenos un mensaje
+        </h3>
+        <p className="text-gray-700 leading-relaxed">
+          Estamos aquí para ayudarte. La atención se maneja principalmente por
+          WhatsApp, pero si prefieres contactarnos por otro medio o tienes
+          dudas sobre nuestros servicios, puedes escribirnos a través del
+          siguiente formulario. ¡Nos pondremos en contacto contigo lo antes
+          posible!
+        </p>
+        <div className="flex items-center space-x-4 mt-6">
+          <a
+            href="https://wa.me/573002171407"
+            className="flex items-center bg-[#0FAEBF] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#32628C] transition duration-300"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaWhatsapp className="mr-2 h-5 w-5" />
+            Contáctanos por WhatsApp
+          </a>
+        </div>
+      </div>
+
+      {/* Formulario a la derecha */}
+      <div className="bg-white p-8 rounded-lg shadow-lg">
+        <h3 className="text-xl font-semibold mb-4 text-[#023E73]">Formulario</h3>
+        <form
+          action="/api/contact" // Cambia esta ruta según tu backend
+          method="POST"
+          className="space-y-4"
+        >
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Nombre
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Correo Electrónico
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+            />
+          </div>
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              Teléfono
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              required
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+            />
+          </div>
+          <div>
+            <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
+              Tema a tratar
+            </label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              required
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+            />
+          </div>
+          <div>
+            <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+              Mensaje o descripción
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows={4}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-[#0FAEBF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#32628C] transition duration-300"
+          >
+            Enviar Mensaje
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
       {/* FAQ */}
       <section id="faq" className="py-20 bg-white" data-aos="fade-left">
         <div className="container mx-auto px-4">
@@ -557,53 +678,24 @@ function App() {
                   </a>
                 </p>
                 <p className="flex items-center">
-                  <MapPin className="mr-2 h-5 w-5" />
-                  Cra 45 # 83-34, Barrio Manrique, Medellín - Colombia
+                  <Clock className="mr-2 h-5 w-5" />
+                  <span>Lunes a Sábado: 8:00 AM - 8:00 PM</span>
                 </p>
-                <div className="flex items-start">
-                  <Clock className="mr-2 h-5 w-5 mt-1" />
-                  <div>
-                    <p>Lunes a Viernes: 4:30 PM - 9:00 PM</p>
-                    <p>Sábados: 8:00 AM - 1:00 PM</p>
-                  </div>
-                </div>
               </div>
               <div className="mt-4 flex space-x-4">
                 <a
-      href="https://www.instagram.com/consultoriomedicodrgarces/"
-      className="hover:text-[#0FAEBF] flex items-center space-x-2"
-    >
-      <Instagram />
-      <span>Instagram</span>
-    </a>
-    <a
-      href="https://m.facebook.com/61573190233989/"
-      className="hover:text-[#0FAEBF] flex items-center space-x-2"
-    >
-      <Facebook />
-      <span>Facebook</span>
-    </a>
-              </div>
-            </div>
-            <div>
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.8754327425547!2d-75.5645!3d6.2786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e442f1c3c3c3c3d%3A0x3c3c3c3c3c3c3c3c!2sCra%2045%20%2383-34%2C%20Medell%C3%ADn%2C%20Antioquia!5e0!3m2!1ses!2sco!4v1620000000000!5m2!1ses!2sco"
-                width="100%"
-                height="250"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="rounded-lg"
-              ></iframe>
-              <div className="text-center mt-4">
-                <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=Cra+45+%2383-34%2C+Medell%C3%ADn%2C+Antioquia"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-[#0FAEBF] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#32628C] transition duration-300"
+                  href="https://www.instagram.com/consultoriomedicodrgarces/"
+                  className="hover:text-[#0FAEBF] flex items-center space-x-2"
                 >
-                  ¿Cómo llegar?
+                  <Instagram />
+                  <span>Instagram</span>
+                </a>
+                <a
+                  href="https://m.facebook.com/61573190233989/"
+                  className="hover:text-[#0FAEBF] flex items-center space-x-2"
+                >
+                  <Facebook />
+                  <span>Facebook</span>
                 </a>
               </div>
             </div>
