@@ -3,6 +3,7 @@ import {
   Menu,
   Phone,
   Clock,
+  Mail,
   Instagram,
   Facebook,
   ChevronDown,
@@ -504,120 +505,137 @@ function App() {
       </section>
 
       {/* Escríbenos */}
-<section
-  id="escribenos"
-  className="py-20 bg-gradient-to-b from-[#E6E6E6] to-[#F2F2F2]"
-  data-aos="fade-up"
->
-  <div className="container mx-auto px-4">
-    <h2 className="text-4xl font-bold text-center mb-12 text-[#023E73]">
-      Escríbenos
-    </h2>
-    <div className="grid md:grid-cols-2 gap-12 items-center">
-      {/* Texto a la izquierda */}
-      <div className="space-y-6">
-        <h3 className="text-2xl font-semibold text-[#32628C]">
-          Escríbenos un mensaje
-        </h3>
-        <p className="text-gray-700 leading-relaxed">
-          Estamos aquí para ayudarte. La atención se maneja principalmente por
-          WhatsApp, pero si prefieres contactarnos por otro medio o tienes
-          dudas sobre nuestros servicios, puedes escribirnos a través del
-          siguiente formulario. ¡Nos pondremos en contacto contigo lo antes
-          posible!
-        </p>
-        <div className="flex items-center space-x-4 mt-6">
-          <a
-            href="https://wa.me/573002171407"
-            className="flex items-center bg-[#0FAEBF] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#32628C] transition duration-300"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaWhatsapp className="mr-2 h-5 w-5" />
-            Contáctanos por WhatsApp
-          </a>
-        </div>
-      </div>
+      <section
+        id="escribenos"
+        className="py-20 bg-gradient-to-b from-[#E6E6E6] to-[#F2F2F2]"
+        data-aos="fade-up"
+      >
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12 text-[#023E73]">
+            Escríbenos
+          </h2>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Texto a la izquierda */}
+            <div className="space-y-6">
+              <h3 className="text-2xl font-semibold text-[#32628C]">
+                Escríbenos un mensaje
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Estamos aquí para ayudarte. La atención se maneja principalmente
+                por WhatsApp, pero si prefieres contactarnos por otro medio o
+                tienes dudas sobre nuestros servicios, puedes escribirnos a
+                través del siguiente formulario. ¡Nos pondremos en contacto
+                contigo lo antes posible!
+              </p>
+              <div className="flex items-center space-x-4 mt-6">
+                <a
+                  href="https://wa.me/573002171407"
+                  className="flex items-center bg-[#0FAEBF] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#32628C] transition duration-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaWhatsapp className="mr-2 h-5 w-5" />
+                  Contáctanos por WhatsApp
+                </a>
+              </div>
+            </div>
 
-      {/* Formulario a la derecha */}
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h3 className="text-xl font-semibold mb-4 text-[#023E73]">Formulario</h3>
-        <form
-          action="/api/contact" // Cambia esta ruta según tu backend
-          method="POST"
-          className="space-y-4"
-        >
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Nombre
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-            />
+            {/* Formulario a la derecha */}
+            <div className="bg-white p-8 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-4 text-[#023E73]">
+                Formulario
+              </h3>
+              <form
+                action="/api/contact" // Cambia esta ruta según tu backend
+                method="POST"
+                className="space-y-4"
+              >
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Nombre
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Correo Electrónico
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Teléfono
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Tema a tratar
+                  </label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Mensaje o descripción
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows={4}
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-[#0FAEBF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#32628C] transition duration-300"
+                >
+                  Enviar Mensaje
+                </button>
+              </form>
+            </div>
           </div>
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Correo Electrónico
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-            />
-          </div>
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-              Teléfono
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              required
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-            />
-          </div>
-          <div>
-            <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
-              Tema a tratar
-            </label>
-            <input
-              type="text"
-              id="subject"
-              name="subject"
-              required
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-            />
-          </div>
-          <div>
-            <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-              Mensaje o descripción
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              required
-              rows={4}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-            ></textarea>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-[#0FAEBF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#32628C] transition duration-300"
-          >
-            Enviar Mensaje
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
+        </div>
+      </section>
 
       {/* FAQ */}
       <section id="faq" className="py-20 bg-white" data-aos="fade-left">
@@ -662,11 +680,12 @@ function App() {
       >
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-xl font-semibold mb-4">
+            {/* Información de contacto */}
+            <div className="bg-[#023E73] p-4 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-4 text-center">
                 Información de Contacto
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-2 pr-4">
                 <p className="flex items-center">
                   <Phone className="mr-2 h-5 w-5" />
                   <a
@@ -679,25 +698,58 @@ function App() {
                 </p>
                 <p className="flex items-center">
                   <Clock className="mr-2 h-5 w-5" />
-                  <span>Lunes a Sábado: 8:00 AM - 8:00 PM</span>
+                  <span>
+                    <strong>Lunes a Viernes:</strong> 4:30 PM - 9:00 PM
+                  </span>
+                </p>
+                <p className="flex items-center">
+                  <Clock className="mr-2 h-5 w-5" />
+                  <span>
+                    <strong>Sábado:</strong> 8:00 AM - 6:00 PM
+                  </span>
+                </p>
+                <p className="flex items-center">
+                  <Clock className="mr-2 h-5 w-5" />
+                  <span>
+                    <strong>Domingo:</strong> 9:00 AM - 6:00 PM
+                  </span>
+                </p>
+                <p className="flex items-center">
+                  <Mail className="mr-2 h-5 w-5" />
+                  <a href="mailto:drgarces19022025@hotmail.com">
+                    drgarces19022025@hotmail.com
+                  </a>
                 </p>
               </div>
-              <div className="mt-4 flex space-x-4">
-                <a
-                  href="https://www.instagram.com/consultoriomedicodrgarces/"
-                  className="hover:text-[#0FAEBF] flex items-center space-x-2"
-                >
-                  <Instagram />
-                  <span>Instagram</span>
-                </a>
-                <a
-                  href="https://m.facebook.com/61573190233989/"
-                  className="hover:text-[#0FAEBF] flex items-center space-x-2"
-                >
-                  <Facebook />
-                  <span>Facebook</span>
-                </a>
-              </div>
+            </div>
+
+            {/* Botones de redes sociales */}
+            <div className="flex flex-col items-end space-y-2 pr-4">
+              <a
+                href="https://www.instagram.com/consultoriomedicodrgarces/"
+                className="hover:text-[#0FAEBF] flex items-center justify-center space-x-2 text-lg px-4 py-2 bg-[#023E73] text-white rounded-md shadow-md hover:bg-white hover:text-[#023E73] transition duration-300 w-1/3"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Instagram className="h-6 w-6" />
+                <span>Instagram</span>
+              </a>
+              <a
+                href="https://m.facebook.com/61573190233989/"
+                className="hover:text-[#0FAEBF] flex items-center justify-center space-x-2 text-lg px-4 py-2 bg-[#023E73] text-white rounded-md shadow-md hover:bg-white hover:text-[#023E73] transition duration-300 w-1/3"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Facebook className="h-6 w-6" />
+                <span>Facebook</span>
+              </a>
+              <a
+                href="mailto:drgarces19022025@hotmail.com"
+                className="hover:text-[#0FAEBF] flex items-center justify-center space-x-2 text-lg px-4 py-2 bg-[#023E73] text-white rounded-md shadow-md hover:bg-white hover:text-[#023E73] transition duration-300 w-1/3"
+              >
+                <Mail className="h-6 w-6" />
+                <span>Correo</span>
+              </a>
             </div>
           </div>
           <div className="text-center mt-8 pt-8 border-t border-black-700">
