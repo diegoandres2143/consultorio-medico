@@ -1,4 +1,10 @@
 import React, { useEffect } from "react";
+import { useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import emailjs from "emailjs-com";
+const EMAILJS_BLOCK_KEY = "emailjs_last_sent";
+const EMAILJS_HISTORY_KEY = "emailjs_history";
+const RECAPTCHA_SITE_KEY = "TU_CLAVE_PUBLICA_RECAPTCHA"; // Reemplaza por tu clave pública
 import {
   Menu,
   Phone,
@@ -17,50 +23,42 @@ const services = [
   {
     title: "Consulta médica general",
     description:
-      "Atención integral para niños, adolescentes y adultos, enfocada en la prevención, diagnóstico y tratamiento de enfermedades comunes.",
-    icon: "🩺",
+      "Brindamos atención integral y personalizada para niños, adolescentes y adultos, enfocándonos en la prevención, diagnóstico y tratamiento de enfermedades comunes. Nuestro objetivo es garantizar tu bienestar y ofrecerte soluciones médicas confiables y profesionales.",
   },
   {
     title: "Asesoría anticonceptiva",
     description:
-      "Orientación profesional sobre métodos anticonceptivos para elegir la opción más adecuada según cada paciente.",
-    icon: "💊",
+      "Recibe orientación profesional y personalizada sobre métodos anticonceptivos, adaptada a tus necesidades y estilo de vida. Te ayudamos a tomar decisiones informadas para tu salud sexual y reproductiva, con total confidencialidad y respeto.",
   },
   {
     title: "Manejo de infecciones de transmisión sexual",
     description:
-      "Diagnóstico, tratamiento y educación sobre ITS para una salud sexual segura y responsable.",
-    icon: "🔬",
+      "Diagnóstico, tratamiento y educación sobre infecciones de transmisión sexual (ITS), promoviendo una salud sexual segura y responsable. Te acompañamos en todo el proceso, resolviendo tus dudas y brindando el mejor cuidado médico.",
   },
   {
     title: "Lectura de resultados de laboratorio",
     description:
-      "Interpretación médica de pruebas como hemogramas, uroanálisis, glicemia, creatinina y estudios hormonales.",
-    icon: "📑",
+      "Interpretación médica detallada de pruebas como hemogramas, uroanálisis, glicemia, creatinina y estudios hormonales. Te explicamos tus resultados de manera clara y te orientamos sobre los pasos a seguir para tu salud.",
   },
   {
     title: "Interpretación de imágenes diagnósticas",
     description:
-      "Evaluación de radiografías, ecografías, tomografías, resonancias magnéticas y electrocardiogramas para un diagnóstico preciso.",
-    icon: "🏥",
+      "Evaluamos radiografías, ecografías, tomografías, resonancias magnéticas y electrocardiogramas para ofrecerte un diagnóstico preciso y profesional. Te ayudamos a comprender tus estudios y a tomar decisiones informadas sobre tu tratamiento.",
   },
   {
     title: "Procedimientos menores",
     description:
-      "Servicios como inyectología, lavado de oídos, manejo de uñas encarnadas, cauterización de verrugas y retiro de implantes anticonceptivos.",
-    icon: "💉",
+      "Realizamos procedimientos médicos básicos como inyectología, lavado de oídos, manejo de uñas encarnadas, cauterización de verrugas y retiro de implantes anticonceptivos, con profesionalismo y seguridad, priorizando tu comodidad y bienestar.",
   },
   {
     title: "Asesorías médico-legales",
     description:
-      "Ofrecemos orientación personalizada en Derechos de petición y tutelas.",
-    icon: "⚖️",
+      "Brindamos acompañamiento y asesoría en trámites médico-legales, como derechos de petición y tutelas, garantizando el respeto por tus derechos y el acceso a la salud. Te orientamos en cada paso del proceso legal relacionado con tu atención médica.",
   },
   {
     title: "Atención médica domiciliaria",
     description:
-      "Servicio médico en la comodidad de tu hogar, ideal para pacientes con movilidad reducida o que prefieren evitar desplazamientos. Incluye consultas, seguimiento y tratamientos básicos.",
-    icon: "🏠",
+      "Servicio médico profesional en la comodidad de tu hogar, ideal para pacientes con movilidad reducida o que prefieren evitar desplazamientos. Incluye consultas, seguimiento y tratamientos básicos, siempre con atención humana y personalizada.",
   },
 ];
 
@@ -102,26 +100,50 @@ const faqs = [
   },
 ];
 
-const testimonials = [
-  {
-    text: "Excelente atención, muy profesional y amable.",
-    author: "María R.",
-  },
-  {
-    text: "Explicó todo con claridad y resolvió mis dudas.",
-    author: "Carlos M.",
-  },
-  {
-    text: "Lo recomiendo, gran médico y ser humano.",
-    author: "Laura G.",
-  },
-];
+
 
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [form, setForm] = useState<{
+    name: string;
+    email: string;
+    phone: string;
+    motivo: string;
+    otroMotivo: string;
+    subject: string;
+    message: string;
+    file: File | null;
+  }>({
+    name: "",
+    email: "",
+    phone: "",
+    motivo: "",
+    otroMotivo: "",
+    subject: "",
+    message: "",
+    file: null,
+  });
+  const [errors, setErrors] = useState<any>({});
+  const [loading, setLoading] = useState(false);
+  const [recaptcha, setRecaptcha] = useState<string | null>(null);
+  const [blockTime, setBlockTime] = useState<number>(0);
+  const [showHistory, setShowHistory] = useState(false);
+  const [history, setHistory] = useState<any[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    // Cargar historial de mensajes enviados
+    const hist = localStorage.getItem(EMAILJS_HISTORY_KEY);
+    if (hist) setHistory(JSON.parse(hist));
+    // Verificar bloqueo
+    const lastSent = localStorage.getItem(EMAILJS_BLOCK_KEY);
+    if (lastSent) {
+      const now = Date.now();
+      if (now - parseInt(lastSent) < 10 * 60 * 1000) {
+        setBlockTime(10 * 60 * 1000 - (now - parseInt(lastSent)));
+      }
+    }
     AOS.init({
       duration: 2000,
     });
@@ -157,9 +179,8 @@ function App() {
               <Menu />
             </button>
             <div
-              className={`${
-                isMenuOpen ? "block" : "hidden"
-              } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-[#023E73] md:bg-transparent`}
+              className={`${isMenuOpen ? "block" : "hidden"
+                } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-[#023E73] md:bg-transparent`}
             >
               <ul className="md:flex space-y-2 md:space-y-0 md:space-x-3 p-4 md:p-0">
                 <li className="mb-2 md:mb-0">
@@ -270,13 +291,7 @@ function App() {
               Descripción
             </h3>
             <p className="text-gray-700">
-              Brindamos atención médica integral y de calidad en Medellín,
-              Colombia. Ofrecemos servicios especializados como consultas
-              generales, asesorías anticonceptivas, manejo de infecciones de
-              transmisión sexual, procedimientos menores y atención médica
-              domiciliaria. Nuestro compromiso es garantizar diagnósticos
-              precisos, tratamientos efectivos y un trato humano y profesional.
-              Agenda tu cita fácilmente y prioriza tu salud con nosotros.
+              Brindamos atención médica domiciliaria en Medellín, Colombia. Nuestro servicio está 100% enfocado en llevar la consulta y el cuidado profesional directamente a tu hogar, con especialidades como consultas generales, asesorías anticonceptivas, manejo de infecciones de transmisión sexual y procedimientos menores. Nos comprometemos a ofrecer diagnósticos precisos, tratamientos efectivos y un trato humano y profesional, sin que tengas que desplazarte. Agenda tu cita fácilmente y prioriza tu salud desde la comodidad de tu casa
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-12">
@@ -418,20 +433,32 @@ function App() {
             </div>
           </section>
 
-          {/* Testimonials */}
+          {/* Zonas de Cobertura */}
           <div className="mt-16" data-aos="fade-up">
-            <h3 className="text-2xl font-semibold mb-8 text-center text-[#32628C]">
-              Lo que dicen nuestros pacientes
-            </h3>
-            <div className="grid md:grid-cols-3 gap-8">
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                  <p className="text-gray-700 mb-4">"{testimonial.text}"</p>
-                  <p className="text-[#0FAEBF] font-semibold">
-                    - {testimonial.author}
-                  </p>
+            <div className="bg-gradient-to-r from-[#0FAEBF] to-[#32628C] rounded-2xl shadow-lg py-10 px-6 md:px-16 flex flex-col items-center">
+              <h3 className="text-3xl font-bold mb-6 text-white text-center tracking-wide drop-shadow">
+                <span className="inline-block align-middle mr-2">🗺️</span>Zonas de Cobertura
+              </h3>
+              <p className="text-center text-lg mb-8 text-white/90">
+                El servicio médico domiciliario está disponible en las siguientes áreas metropolitanas:
+              </p>
+              <div className="flex flex-col md:flex-row justify-center items-center gap-8 w-full">
+                <div className="flex flex-col items-center bg-white/90 rounded-xl shadow-md px-8 py-6 w-64 mb-4 md:mb-0">
+                  <span className="text-4xl mb-2">🏙️</span>
+                  <span className="text-xl font-bold text-[#023E73]">Medellín</span>
+                  <span className="text-sm text-[#32628C] mt-2">Cobertura total</span>
                 </div>
-              ))}
+                <div className="flex flex-col items-center bg-white/90 rounded-xl shadow-md px-8 py-6 w-64 mb-4 md:mb-0">
+                  <span className="text-4xl mb-2">🏘️</span>
+                  <span className="text-xl font-bold text-[#023E73]">Itagüí</span>
+                  <span className="text-sm text-[#32628C] mt-2">Zona urbana y principales barrios</span>
+                </div>
+                <div className="flex flex-col items-center bg-white/90 rounded-xl shadow-md px-8 py-6 w-64">
+                  <span className="text-4xl mb-2">🌳</span>
+                  <span className="text-xl font-bold text-[#023E73]">Envigado</span>
+                  <span className="text-sm text-[#32628C] mt-2">Zona urbana y principales barrios</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -448,18 +475,50 @@ function App() {
             Nuestros Servicios
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="bg-[#c0e6e7] p-6 rounded-lg shadow-md"
-              >
-                <div className="text-4xl mb-4">{service.icon}</div>
-                <h3 className="text-xl font-semibold mb-3 text-[#32628C]">
-                  {service.title}
-                </h3>
-                <p className="text-gray-700">{service.description}</p>
-              </div>
-            ))}
+            {services.map((service, index) => {
+              // Asignar imagen por índice (1.png a 9.png)
+              const imageSrc = `/${index + 1}.png`;
+              // Mejorar descripciones cortas
+              let description = service.description;
+              if (description.length < 60) {
+                if (service.title.includes('Asesoría anticonceptiva')) {
+                  description = 'Recibe orientación profesional y personalizada sobre métodos anticonceptivos, adaptada a tus necesidades y estilo de vida. Te ayudamos a tomar decisiones informadas para tu salud sexual y reproductiva.';
+                } else if (service.title.includes('Asesorías médico-legales')) {
+                  description = 'Brindamos acompañamiento y asesoría en trámites médico-legales, como derechos de petición y tutelas, garantizando el respeto por tus derechos y el acceso a la salud.';
+                } else if (service.title.includes('Procedimientos menores')) {
+                  description = 'Realizamos procedimientos médicos básicos como inyectología, lavado de oídos, manejo de uñas encarnadas, cauterización de verrugas y retiro de implantes anticonceptivos, con profesionalismo y seguridad.';
+                }
+              }
+              return (
+                <div
+                  key={index}
+                  className="flip-card cursor-pointer w-full h-80 focus:outline-none"
+                  tabIndex={0}
+                >
+                  <div className="flip-card-inner w-full h-full">
+                    {/* Front Side */}
+                    <div className="flip-card-front">
+                      <h3 className="text-xl font-bold mb-4 text-[#32628C] text-center px-2">
+                        {service.title}
+                      </h3>
+                      <img
+                        src={imageSrc}
+                        alt={service.title}
+                        className="h-48 w-48 object-cover rounded-xl shadow mb-2 border-4 border-[#0FAEBF] mx-auto"
+                      />
+                      <span className="text-[#0FAEBF] text-sm mt-2">Ver detalles</span>
+                    </div>
+                    {/* Back Side */}
+                    <div className="flip-card-back">
+                      <h3 className="text-xl font-bold mb-4 text-[#0FAEBF] text-left">
+                        {service.title}
+                      </h3>
+                      <p className="text-base text-left px-4">{description}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -517,26 +576,35 @@ function App() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Texto a la izquierda */}
             <div className="space-y-6">
-              <h3 className="text-2xl font-semibold text-[#32628C]">
-                Escríbenos un mensaje
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Estamos aquí para ayudarte. La atención se maneja principalmente
-                por WhatsApp, pero si prefieres contactarnos por otro medio o
-                tienes dudas sobre nuestros servicios, puedes escribirnos a
-                través del siguiente formulario. ¡Nos pondremos en contacto
-                contigo lo antes posible!
-              </p>
-              <div className="flex items-center space-x-4 mt-6">
-                <a
-                  href="https://wa.me/573002171407"
-                  className="flex items-center bg-[#0FAEBF] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#32628C] transition duration-300"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaWhatsapp className="mr-2 h-5 w-5" />
-                  Contáctanos por WhatsApp
-                </a>
+              <div className="flex flex-col items-center space-y-12 h-full justify-between">
+                <h3 className="text-2xl font-semibold text-[#32628C] text-center">
+                  Escríbenos un mensaje
+                </h3>
+                <p className="text-gray-700 leading-relaxed text-left">
+                  Estamos aquí para ayudarte. La atención se maneja principalmente
+                  por WhatsApp, pero si prefieres contactarnos por otro medio o
+                  tienes dudas sobre nuestros servicios, puedes escribirnos a
+                  través del siguiente formulario. ¡Nos pondremos en contacto
+                  contigo lo antes posible!
+                </p>
+                <div className="flex justify-center items-center w-full">
+                  <img
+                    src="/form.png"
+                    alt="Decorativo"
+                    className="max-w-xs w-full rounded-xl shadow-lg border-4 border-[#0FAEBF]"
+                  />
+                </div>
+                <div className="flex items-center justify-center w-full">
+                  <a
+                    href="https://wa.me/573002171407"
+                    className="flex items-center bg-[#0FAEBF] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#32628C] transition duration-300 text-lg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaWhatsapp className="mr-2 h-6 w-6" />
+                    Contáctanos por WhatsApp
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -545,93 +613,153 @@ function App() {
               <h3 className="text-xl font-semibold mb-4 text-[#023E73]">
                 Formulario
               </h3>
+              {/* Formulario con EmailJS */}
+              {/* Formulario con validación, loading, motivo, archivo, recaptcha, historial y animaciones */}
               <form
-                action="/api/contact" // Cambia esta ruta según tu backend
-                method="POST"
-                className="space-y-4"
+                className="space-y-4 animate-fadein"
+                onSubmit={async e => {
+                  e.preventDefault();
+                  if (blockTime > 0) {
+                    alert(`Ya enviaste un mensaje. Espera ${Math.ceil(blockTime / 60000)} minuto(s).`);
+                    return;
+                  }
+                  // Validación avanzada
+                  const newErrors: any = {};
+                  if (!form.name || form.name.length < 3) newErrors.name = "El nombre debe tener al menos 3 caracteres.";
+                  if (!form.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) newErrors.email = "Correo electrónico inválido.";
+                  if (!form.phone || form.phone.length < 7) newErrors.phone = "Teléfono inválido.";
+                  if (!form.motivo) newErrors.motivo = "Selecciona un motivo.";
+                  if (form.motivo === "Otro" && !form.otroMotivo) newErrors.otroMotivo = "Especifica el motivo.";
+                  if (!form.subject || form.subject.length < 3) newErrors.subject = "Tema demasiado corto.";
+                  if (!form.message || form.message.length < 10) newErrors.message = "El mensaje debe tener al menos 10 caracteres.";
+                  if (!recaptcha) newErrors.recaptcha = "Completa el reCAPTCHA.";
+                  if (form.file) {
+                    if (form.file.size > 5 * 1024 * 1024) newErrors.file = "El archivo no debe superar 5MB.";
+                    if (!/(jpg|jpeg|png)$/i.test(form.file.name)) newErrors.file = "Solo se permiten imágenes JPG o PNG.";
+                  }
+                  setErrors(newErrors);
+                  if (Object.keys(newErrors).length > 0) return;
+                  setLoading(true);
+                  // Envío con EmailJS
+                  const formData = new FormData();
+                  Object.entries(form).forEach(([key, value]) => {
+                    if (key === "file" && value) formData.append("file", value as File);
+                    else formData.append(key, value as string);
+                  });
+                  formData.append("recaptcha", recaptcha!);
+                  try {
+                    await emailjs.send(
+                      "service_3oc41sc", // <-- Reemplaza con tu Service ID
+                      "template_xxxxxx", // <-- Reemplaza con tu Template ID
+                      {
+                        ...form,
+                        motivo: form.motivo === "Otro" ? form.otroMotivo : form.motivo,
+                        file: form.file,
+                        recaptcha,
+                      },
+                      "user_xxxxxxxxx" // <-- Reemplaza con tu User ID
+                    );
+                    const now = Date.now();
+                    localStorage.setItem(EMAILJS_BLOCK_KEY, now.toString());
+                    setBlockTime(10 * 60 * 1000);
+                    // Guardar historial
+                    const newHistory = [...history, { ...form, date: new Date().toLocaleString() }];
+                    setHistory(newHistory);
+                    localStorage.setItem(EMAILJS_HISTORY_KEY, JSON.stringify(newHistory));
+                    alert("¡Tu mensaje fue enviado correctamente! Puedes enviar otro mensaje en 10 minutos.");
+                    setForm({ name: "", email: "", phone: "", motivo: "", otroMotivo: "", subject: "", message: "", file: null });
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                  } catch {
+                    alert("Hubo un error al enviar el mensaje. Por favor intenta de nuevo más tarde.");
+                  }
+                  setLoading(false);
+                }}
               >
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Nombre
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-                  />
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre</label>
+                  <input type="text" id="name" name="name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className={`w-full px-4 py-2 rounded-lg border ${errors.name ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
+                  {errors.name && <span className="text-red-500 text-xs animate-shake">{errors.name}</span>}
                 </div>
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Correo Electrónico
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-                  />
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                  <input type="email" id="email" name="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className={`w-full px-4 py-2 rounded-lg border ${errors.email ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
+                  {errors.email && <span className="text-red-500 text-xs animate-shake">{errors.email}</span>}
                 </div>
                 <div>
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Teléfono
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-                  />
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Teléfono</label>
+                  <input type="tel" id="phone" name="phone" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className={`w-full px-4 py-2 rounded-lg border ${errors.phone ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
+                  {errors.phone && <span className="text-red-500 text-xs animate-shake">{errors.phone}</span>}
                 </div>
                 <div>
-                  <label
-                    htmlFor="subject"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Tema a tratar
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-                  />
+                  <label htmlFor="motivo" className="block text-sm font-medium text-gray-700">Motivo de contacto</label>
+                  <select id="motivo" name="motivo" value={form.motivo} onChange={e => setForm(f => ({ ...f, motivo: e.target.value, otroMotivo: "" }))} className={`w-full px-4 py-2 rounded-lg border ${errors.motivo ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF`}>
+                    <option value="">Selecciona una opción</option>
+                    <option value="Consulta médica">Consulta médica</option>
+                    <option value="Solicitud de cita">Solicitud de cita</option>
+                    <option value="Resultados de laboratorio">Resultados de laboratorio</option>
+                    <option value="Asesoría anticonceptiva">Asesoría anticonceptiva</option>
+                    <option value="Interpretación de imágenes">Interpretación de imágenes</option>
+                    <option value="Procedimientos menores">Procedimientos menores</option>
+                    <option value="Asesoría médico-legal">Asesoría médico-legal</option>
+                    <option value="Atención domiciliaria">Atención domiciliaria</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                  {errors.motivo && <span className="text-red-500 text-xs animate-shake">{errors.motivo}</span>}
+                  {form.motivo === "Otro" && (
+                    <input type="text" placeholder="Especifica el motivo" value={form.otroMotivo} onChange={e => setForm(f => ({ ...f, otroMotivo: e.target.value }))} className={`mt-2 w-full px-4 py-2 rounded-lg border ${errors.otroMotivo ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
+                  )}
+                  {errors.otroMotivo && <span className="text-red-500 text-xs animate-shake">{errors.otroMotivo}</span>}
                 </div>
                 <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Mensaje o descripción
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    required
-                    rows={4}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]"
-                  ></textarea>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700">Tema a tratar</label>
+                  <input type="text" id="subject" name="subject" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} className={`w-full px-4 py-2 rounded-lg border ${errors.subject ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
+                  {errors.subject && <span className="text-red-500 text-xs animate-shake">{errors.subject}</span>}
                 </div>
-                <button
-                  type="submit"
-                  className="w-full bg-[#0FAEBF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#32628C] transition duration-300"
-                >
-                  Enviar Mensaje
-                </button>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700">Mensaje o descripción</label>
+                  <textarea id="message" name="message" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} rows={4} className={`w-full px-4 py-2 rounded-lg border ${errors.message ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
+                  {errors.message && <span className="text-red-500 text-xs animate-shake">{errors.message}</span>}
+                </div>
+                <div>
+                  <label htmlFor="file" className="block text-sm font-medium text-gray-700">Adjuntar imagen (JPG/PNG, máx. 5MB)</label>
+                  <input ref={fileInputRef} type="file" id="file" name="file" accept="image/jpeg,image/png" onChange={e => setForm(f => ({ ...f, file: e.target.files?.[0] || null }))} className={`w-full px-4 py-2 rounded-lg border ${errors.file ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
+                  {errors.file && <span className="text-red-500 text-xs animate-shake">{errors.file}</span>}
+                </div>
+                <div className="flex justify-center">
+                  <ReCAPTCHA sitekey="6LcREa8rAAAAAAbobuz8FGo9BVKJznZjycCgOfNX" onChange={(v: string | null) => setRecaptcha(v)} />
+                  {errors.recaptcha && <span className="text-red-500 text-xs animate-shake ml-2">{errors.recaptcha}</span>}
+                </div>
+                <button type="submit" disabled={loading || blockTime > 0} className={`w-full bg-[#0FAEBF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#32628C] transition duration-300 ${loading || blockTime > 0 ? "opacity-50 cursor-not-allowed" : ""}`}>{loading ? "Enviando..." : "Enviar Mensaje"}</button>
+                <div className="flex justify-end mt-2">
+                  <button type="button" className="text-xs text-[#32628C] underline" onClick={() => setShowHistory(true)}>Ver historial de mensajes enviados</button>
+                </div>
               </form>
+              {/* Modal historial de mensajes enviados */}
+              {showHistory && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 animate-fadein">
+                  <div className="bg-white rounded-lg p-6 max-w-lg w-full shadow-lg relative">
+                    <button className="absolute top-2 right-2 text-[#32628C]" onClick={() => setShowHistory(false)}>✕</button>
+                    <h4 className="text-lg font-bold mb-4 text-[#023E73]">Historial de mensajes enviados</h4>
+                    {history.length === 0 ? (
+                      <p className="text-gray-600">No has enviado mensajes en esta sesión.</p>
+                    ) : (
+                      <ul className="space-y-2 max-h-64 overflow-y-auto">
+                        {history.map((msg, i) => (
+                          <li key={i} className="border rounded p-2 text-xs">
+                            <strong>Fecha:</strong> {msg.date}<br />
+                            <strong>Nombre:</strong> {msg.name}<br />
+                            <strong>Email:</strong> {msg.email}<br />
+                            <strong>Teléfono:</strong> {msg.phone}<br />
+                            <strong>Motivo:</strong> {msg.motivo}<br />
+                            <strong>Tema:</strong> {msg.subject}<br />
+                            <strong>Mensaje:</strong> {msg.message}<br />
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -655,15 +783,13 @@ function App() {
                     {faq.question}
                   </span>
                   <ChevronDown
-                    className={`transform transition-transform ${
-                      openFaq === index ? "rotate-180" : ""
-                    }`}
+                    className={`transform transition-transform ${openFaq === index ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
                 <div
-                  className={`px-6 py-4 text-gray-700 ${
-                    openFaq === index ? "block" : "hidden"
-                  }`}
+                  className={`px-6 py-4 text-gray-700 ${openFaq === index ? "block" : "hidden"
+                    }`}
                 >
                   {faq.answer}
                 </div>
