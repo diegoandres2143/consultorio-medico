@@ -1,4 +1,30 @@
 import React, { useEffect } from "react";
+import { useState } from "react";
+// Componente para mostrar certificado miniatura y ampliado
+function CertificadoMiniatura({ src, alt, titulo }: { src: string; alt: string; titulo: string }) {
+  const [ampliado, setAmpliado] = useState(false);
+  return (
+    <div className="flex flex-col items-center">
+      <img
+        src={src}
+        alt={alt}
+        className="w-24 h-24 object-contain rounded shadow cursor-pointer border border-[#0FAEBF] hover:scale-105 transition"
+        onClick={() => setAmpliado(true)}
+      />
+      <h3 className="text-xl font-semibold mt-4">{titulo}</h3>
+      {ampliado && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={() => setAmpliado(false)}>
+          <img
+            src={src}
+            alt={alt}
+            className="max-w-lg w-full rounded-xl border-4 border-[#0FAEBF] shadow-2xl bg-white p-2"
+            style={{ boxShadow: "0 0 40px 10px rgba(0,180,255,0.15)" }}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
 import { useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import emailjs from "emailjs-com";
@@ -15,7 +41,6 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -410,25 +435,17 @@ function App() {
               <h3 className="text-2xl font-semibold mb-8 text-center text-[#0FAEBF]">
                 Contamos con los siguientes certificados:
               </h3>
-              <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div>
-                  <div className="text-4xl mb-4">📄</div>
-                  <h3 className="text-xl font-semibold">
-                    Número de tarjeta profesional
-                  </h3>
-                </div>
-                <div>
-                  <div className="text-4xl mb-4">📑</div>
-                  <h3 className="text-xl font-semibold">
-                    Registro en el Rethus
-                  </h3>
-                </div>
-                <div>
-                  <div className="text-4xl mb-4">📜</div>
-                  <h3 className="text-xl font-semibold">
-                    Certificado de ética profesional
-                  </h3>
-                </div>
+              <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <CertificadoMiniatura
+                  src="/RETUS.png"
+                  alt="Certificado RETUS"
+                  titulo="Registro en el Rethus"
+                />
+                <CertificadoMiniatura
+                  src="/etica.png"
+                  alt="Certificado de ética profesional"
+                  titulo="Certificado de ética profesional"
+                />
               </div>
             </div>
           </section>
@@ -451,12 +468,12 @@ function App() {
                 <div className="flex flex-col items-center bg-white/90 rounded-xl shadow-md px-8 py-6 w-64 mb-4 md:mb-0">
                   <span className="text-4xl mb-2">🏘️</span>
                   <span className="text-xl font-bold text-[#023E73]">Itagüí</span>
-                  <span className="text-sm text-[#32628C] mt-2">Zona urbana y principales barrios</span>
+                  <span className="text-sm text-[#32628C] mt-2">Zona urbana</span>
                 </div>
                 <div className="flex flex-col items-center bg-white/90 rounded-xl shadow-md px-8 py-6 w-64">
                   <span className="text-4xl mb-2">🌳</span>
                   <span className="text-xl font-bold text-[#023E73]">Envigado</span>
-                  <span className="text-sm text-[#32628C] mt-2">Zona urbana y principales barrios</span>
+                  <span className="text-sm text-[#32628C] mt-2">Barrios Principales</span>
                 </div>
               </div>
             </div>
