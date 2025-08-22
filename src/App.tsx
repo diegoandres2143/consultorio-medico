@@ -120,7 +120,7 @@ const faqs = [
   {
     question: "¿Dónde está ubicado el consultorio?",
     answer:
-      "Estamos ubicados dentro del “Centro médico y odontológico clásico.”",
+      "Actualmente el servicio se manera 100% de manera domiciliaria, no necesitas transportarte a un punto físico, nosotros vamos directamente a atenderte en la comodidad de tu hogar.",
     icon: "📍",
   },
 ];
