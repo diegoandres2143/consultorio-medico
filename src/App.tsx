@@ -128,6 +128,8 @@ const faqs = [
 
 
 function App() {
+  const [flippedService, setFlippedService] = useState<number | null>(null);
+  const [certModal, setCertModal] = useState<{ src: string; alt: string } | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [form, setForm] = useState<{
@@ -187,79 +189,83 @@ function App() {
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center">
-              <div className="bg-white p-0 rounded-full">
+            <div className="flex items-center min-w-0">
+              <div className="bg-white p-0 rounded-full flex-shrink-0">
                 <img
                   src="/Logo Nilson.png"
                   alt="Logo Nilson"
                   className="h-12 w-12"
                 />
               </div>
-              <div className="text-xl font-bold ml-2">Dr. Garces</div>
+              <div className="text-xl font-bold ml-2 truncate">Dr. Garces</div>
             </div>
+            {/* Botón hamburguesa visible en móviles y pantallas verticales */}
             <button
-              className="md:hidden"
+              className="block xl:hidden ml-2 focus:outline-none"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Abrir menú"
             >
-              <Menu />
+              <Menu size={32} />
             </button>
+            {/* Menú principal */}
             <div
-              className={`${isMenuOpen ? "block" : "hidden"
-                } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-[#023E73] md:bg-transparent`}
+              className={`${
+                isMenuOpen ? "block" : "hidden"
+              } absolute top-full left-0 w-full bg-[#023E73] xl:bg-transparent xl:static xl:block xl:w-auto`}
             >
-              <ul className="md:flex space-y-2 md:space-y-0 md:space-x-3 p-4 md:p-0">
-                <li className="mb-2 md:mb-0">
+              <ul className="flex flex-col xl:flex-row xl:space-x-3 space-y-2 xl:space-y-0 p-4 xl:p-0">
+                <li>
                   <a
                     href="#inicio"
-                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
+                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300 text-center"
                   >
                     Inicio
                   </a>
                 </li>
-                <li className="mb-2 md:mb-0">
+                <li>
                   <a
                     href="#sobre-nosotros"
-                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
+                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300 text-center"
                   >
                     Sobre Nosotros
                   </a>
                 </li>
-                <li className="mb-2 md:mb-0">
+                <li>
                   <a
                     href="#conocenos"
-                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
+                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300 text-center"
                   >
                     Conócenos
                   </a>
                 </li>
-                <li className="mb-2 md:mb-0">
+                <li>
                   <a
                     href="#servicios"
-                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
+                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300 text-center"
                   >
                     Servicios
                   </a>
                 </li>
-                <li className="mb-2 md:mb-0">
+                <li>
                   <a
                     href="#como-funciona"
-                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
+                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300 text-center"
                   >
                     Cómo Funciona
                   </a>
                 </li>
-                <li className="mb-2 md:mb-0">
+                <li>
                   <a
                     href="#faq"
-                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
+                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300 text-center"
                   >
                     FAQ
                   </a>
                 </li>
-                <li className="mb-2 md:mb-0">
+                <li>
                   <a
                     href="#escribenos"
-                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300"
+                    className="block px-4 py-2 rounded-full border-2 border-[#0FAEBF] hover:bg-[#0FAEBF] hover:text-white transition duration-300 text-center"
                   >
                     Escríbenos
                   </a>
@@ -435,17 +441,44 @@ function App() {
               <h3 className="text-2xl font-semibold mb-8 text-center text-[#0FAEBF]">
                 Contamos con los siguientes certificados:
               </h3>
-              <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
-                <CertificadoMiniatura
-                  src="/RETUS.png"
-                  alt="Certificado RETUS"
-                  titulo="Registro en el Rethus"
-                />
-                <CertificadoMiniatura
-                  src="/etica.png"
-                  alt="Certificado de ética profesional"
-                  titulo="Certificado de ética profesional"
-                />
+              <div className="mt-12 grid grid-cols-2 gap-6 justify-center items-center">
+                {/* Card Certificado RETUS */}
+                <div
+                  className="flex flex-col justify-center items-center rounded-xl shadow p-4 w-44 bg-gray-300 mx-auto cursor-pointer hover:scale-105 transition"
+                  onClick={() => setCertModal({ src: "/RETUS.png", alt: "Certificado RETUS" })}
+                >
+                  <img
+                    src="/RETUS.png"
+                    alt="Certificado RETUS"
+                    className="w-16 h-16 object-contain rounded mb-2 mx-auto"
+                    style={{ border: "none" }}
+                  />
+                  <h3 className="text-s font-semibold text-[#023E73] mt-2 text-center">Registro en el Rethus</h3>
+                </div>
+                {/* Card Certificado Ética */}
+                <div
+                  className="flex flex-col justify-center items-center rounded-xl shadow p-4 w-44 bg-gray-300 mx-auto cursor-pointer hover:scale-105 transition"
+                  onClick={() => setCertModal({ src: "/etica.png", alt: "Certificado de ética profesional" })}
+                >
+                  <img
+                    src="/etica.png"
+                    alt="Certificado de ética profesional"
+                    className="w-16 h-16 object-contain rounded mb-2 mx-auto"
+                    style={{ border: "none" }}
+                  />
+                  <h3 className="text-s font-semibold text-[#023E73] mt-2 text-center">Certificado de ética profesional</h3>
+                </div>
+      {/* Modal para imagen ampliada de certificado */}
+      {certModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={() => setCertModal(null)}>
+          <img
+            src={certModal.src}
+            alt={certModal.alt}
+            className="max-w-lg w-full rounded-xl border-4 border-[#0FAEBF] shadow-2xl bg-white p-2"
+            style={{ boxShadow: "0 0 40px 10px rgba(0,180,255,0.15)" }}
+          />
+        </div>
+      )}
               </div>
             </div>
           </section>
@@ -509,8 +542,9 @@ function App() {
               return (
                 <div
                   key={index}
-                  className="flip-card cursor-pointer w-full h-80 focus:outline-none"
+                  className={`flip-card cursor-pointer w-full h-80 focus:outline-none ${flippedService === index ? 'flipped' : ''}`}
                   tabIndex={0}
+                  onClick={() => setFlippedService(flippedService === index ? null : index)}
                 >
                   <div className="flip-card-inner w-full h-full">
                     {/* Front Side */}
