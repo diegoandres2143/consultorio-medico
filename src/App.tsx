@@ -716,8 +716,8 @@ function App() {
                   // Envío con EmailJS
                   try {
                     await emailjs.send(
-                      "service_ksiy6gu", // Tu Service ID
-                      "template_n4qou1w", // Tu nuevo Template ID
+                      "service_gj2tgfs", // Tu Service ID
+                      "template_ehbtsbq", // Tu nuevo Template ID
                       {
                         name: form.name,
                         email: form.email,
@@ -727,7 +727,7 @@ function App() {
                         message: form.message,
                         date: new Date().toLocaleString(),
                       },
-                      "8mqX2cRq_3e2mSG5M" // Tu Public Key
+                      "wHVGO1UQp2atbsA-f" // Tu Public Key
                     );
                     const now = Date.now();
                     localStorage.setItem(EMAILJS_BLOCK_KEY, now.toString());
