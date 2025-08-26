@@ -152,6 +152,24 @@ function App() {
     file: null,
   });
   const [errors, setErrors] = useState<any>({});
+  // Validación en tiempo real
+  useEffect(() => {
+    const newErrors: any = {};
+    if (form.name && form.name.length < 3) newErrors.name = "El nombre debe tener al menos 3 caracteres.";
+    if (form.name && form.name.length > 50) newErrors.name = "El nombre no debe superar 50 caracteres.";
+    if (form.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) newErrors.email = "Correo electrónico inválido.";
+    if (form.email && form.email.length > 100) newErrors.email = "El correo no debe superar 100 caracteres.";
+    if (form.phone && form.phone.length < 7) newErrors.phone = "Teléfono inválido.";
+    if (form.phone && form.phone.length > 15) newErrors.phone = "El teléfono no debe superar 15 dígitos.";
+    if (!form.motivo) newErrors.motivo = "Selecciona un motivo.";
+    if (form.motivo === "Otro" && !form.otroMotivo) newErrors.otroMotivo = "Especifica el motivo.";
+    if (form.otroMotivo && form.otroMotivo.length > 100) newErrors.otroMotivo = "El motivo no debe superar 100 caracteres.";
+    if (form.subject && form.subject.length < 3) newErrors.subject = "Tema demasiado corto.";
+    if (form.subject && form.subject.length > 100) newErrors.subject = "El tema no debe superar 100 caracteres.";
+    if (form.message && form.message.length < 10) newErrors.message = "El mensaje debe tener al menos 10 caracteres.";
+    if (form.message && form.message.length > 500) newErrors.message = "El mensaje no debe superar 500 caracteres.";
+    setErrors(newErrors);
+  }, [form]);
   const [loading, setLoading] = useState(false);
   const [recaptcha, setRecaptcha] = useState<string | null>(null);
   const [blockTime, setBlockTime] = useState<number>(0);
@@ -163,17 +181,21 @@ function App() {
     // Cargar historial de mensajes enviados
     const hist = localStorage.getItem(EMAILJS_HISTORY_KEY);
     if (hist) setHistory(JSON.parse(hist));
-    // Verificar bloqueo
-    const lastSent = localStorage.getItem(EMAILJS_BLOCK_KEY);
-    if (lastSent) {
-      const now = Date.now();
-      if (now - parseInt(lastSent) < 10 * 60 * 1000) {
-        setBlockTime(10 * 60 * 1000 - (now - parseInt(lastSent)));
+    // Verificar bloqueo y actualizar en tiempo real
+    const updateBlockTime = () => {
+      const lastSent = localStorage.getItem(EMAILJS_BLOCK_KEY);
+      if (lastSent) {
+        const now = Date.now();
+        const remaining = 10 * 60 * 1000 - (now - parseInt(lastSent));
+        setBlockTime(remaining > 0 ? remaining : 0);
+      } else {
+        setBlockTime(0);
       }
-    }
-    AOS.init({
-      duration: 2000,
-    });
+    };
+    updateBlockTime();
+    const interval = setInterval(updateBlockTime, 1000);
+    AOS.init({ duration: 2000 });
+    return () => clearInterval(interval);
   }, []);
 
   const toggleFaq = (index: number) => {
@@ -692,23 +714,20 @@ function App() {
                   if (Object.keys(newErrors).length > 0) return;
                   setLoading(true);
                   // Envío con EmailJS
-                  const formData = new FormData();
-                  Object.entries(form).forEach(([key, value]) => {
-                    if (key === "file" && value) formData.append("file", value as File);
-                    else formData.append(key, value as string);
-                  });
-                  formData.append("recaptcha", recaptcha!);
                   try {
                     await emailjs.send(
-                      "service_3oc41sc", // <-- Reemplaza con tu Service ID
-                      "template_xxxxxx", // <-- Reemplaza con tu Template ID
+                      "service_ksiy6gu", // Tu Service ID
+                      "template_n4qou1w", // Tu nuevo Template ID
                       {
-                        ...form,
+                        name: form.name,
+                        email: form.email,
+                        phone: form.phone,
                         motivo: form.motivo === "Otro" ? form.otroMotivo : form.motivo,
-                        file: form.file,
-                        recaptcha,
+                        subject: form.subject,
+                        message: form.message,
+                        date: new Date().toLocaleString(),
                       },
-                      "user_xxxxxxxxx" // <-- Reemplaza con tu User ID
+                      "8mqX2cRq_3e2mSG5M" // Tu Public Key
                     );
                     const now = Date.now();
                     localStorage.setItem(EMAILJS_BLOCK_KEY, now.toString());
@@ -728,22 +747,51 @@ function App() {
               >
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre</label>
-                  <input type="text" id="name" name="name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className={`w-full px-4 py-2 rounded-lg border ${errors.name ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
-                  {errors.name && <span className="text-red-500 text-xs animate-shake">{errors.name}</span>}
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={form.name}
+                    maxLength={50}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    className={`w-full px-4 py-2 rounded-lg border ${errors.name ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`}
+                  />
+                  {errors.name && <span className="flex items-center text-red-600 text-sm font-semibold mt-1 animate-shake"><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" /></svg>{errors.name}</span>}
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-                  <input type="email" id="email" name="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className={`w-full px-4 py-2 rounded-lg border ${errors.email ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
-                  {errors.email && <span className="text-red-500 text-xs animate-shake">{errors.email}</span>}
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={form.email}
+                    maxLength={100}
+                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                    className={`w-full px-4 py-2 rounded-lg border ${errors.email ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`}
+                  />
+                  {errors.email && <span className="flex items-center text-red-600 text-sm font-semibold mt-1 animate-shake"><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" /></svg>{errors.email}</span>}
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Teléfono</label>
-                  <input type="tel" id="phone" name="phone" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className={`w-full px-4 py-2 rounded-lg border ${errors.phone ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
-                  {errors.phone && <span className="text-red-500 text-xs animate-shake">{errors.phone}</span>}
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={form.phone}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={15}
+                    onChange={e => {
+                      const value = e.target.value.replace(/[^0-9]/g, "");
+                      setForm(f => ({ ...f, phone: value }));
+                    }}
+                    className={`w-full px-4 py-2 rounded-lg border ${errors.phone ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`}
+                  />
+                  {errors.phone && <span className="flex items-center text-red-600 text-sm font-semibold mt-1 animate-shake"><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" /></svg>{errors.phone}</span>}
                 </div>
                 <div>
                   <label htmlFor="motivo" className="block text-sm font-medium text-gray-700">Motivo de contacto</label>
-                  <select id="motivo" name="motivo" value={form.motivo} onChange={e => setForm(f => ({ ...f, motivo: e.target.value, otroMotivo: "" }))} className={`w-full px-4 py-2 rounded-lg border ${errors.motivo ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF`}>
+                  <select id="motivo" name="motivo" value={form.motivo} onChange={e => setForm(f => ({ ...f, motivo: e.target.value, otroMotivo: "" }))} className={`w-full px-4 py-2 rounded-lg border ${errors.motivo ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF`}> 
                     <option value="">Selecciona una opción</option>
                     <option value="Consulta médica">Consulta médica</option>
                     <option value="Solicitud de cita">Solicitud de cita</option>
@@ -755,21 +803,47 @@ function App() {
                     <option value="Atención domiciliaria">Atención domiciliaria</option>
                     <option value="Otro">Otro</option>
                   </select>
-                  {errors.motivo && <span className="text-red-500 text-xs animate-shake">{errors.motivo}</span>}
-                  {form.motivo === "Otro" && (
-                    <input type="text" placeholder="Especifica el motivo" value={form.otroMotivo} onChange={e => setForm(f => ({ ...f, otroMotivo: e.target.value }))} className={`mt-2 w-full px-4 py-2 rounded-lg border ${errors.otroMotivo ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
+                  {errors.motivo && (
+                    <span className="flex items-center text-red-600 text-sm font-semibold mt-1 animate-shake">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" /></svg>{errors.motivo}
+                    </span>
                   )}
-                  {errors.otroMotivo && <span className="text-red-500 text-xs animate-shake">{errors.otroMotivo}</span>}
+                  {form.motivo === "Otro" && (
+                    <>
+                      <input type="text" placeholder="Especifica el motivo" value={form.otroMotivo} maxLength={100} onChange={e => setForm(f => ({ ...f, otroMotivo: e.target.value }))} className={`mt-2 w-full px-4 py-2 rounded-lg border ${errors.otroMotivo ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
+                      {errors.otroMotivo && (
+                        <span className="flex items-center text-red-600 text-sm font-semibold mt-1 animate-shake">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" /></svg>{errors.otroMotivo}
+                        </span>
+                      )}
+                    </>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium text-gray-700">Tema a tratar</label>
-                  <input type="text" id="subject" name="subject" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} className={`w-full px-4 py-2 rounded-lg border ${errors.subject ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
-                  {errors.subject && <span className="text-red-500 text-xs animate-shake">{errors.subject}</span>}
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={form.subject}
+                    maxLength={100}
+                    onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
+                    className={`w-full px-4 py-2 rounded-lg border ${errors.subject ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`}
+                  />
+                  {errors.subject && <span className="flex items-center text-red-600 text-sm font-semibold mt-1 animate-shake"><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" /></svg>{errors.subject}</span>}
                 </div>
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700">Mensaje o descripción</label>
-                  <textarea id="message" name="message" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} rows={4} className={`w-full px-4 py-2 rounded-lg border ${errors.message ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`} />
-                  {errors.message && <span className="text-red-500 text-xs animate-shake">{errors.message}</span>}
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={form.message}
+                    maxLength={500}
+                    onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                    rows={4}
+                    className={`w-full px-4 py-2 rounded-lg border ${errors.message ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF]`}
+                  />
+                  {errors.message && <span className="flex items-center text-red-600 text-sm font-semibold mt-1 animate-shake"><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" /></svg>{errors.message}</span>}
                 </div>
                 <div>
                   <label htmlFor="file" className="block text-sm font-medium text-gray-700">Adjuntar imagen (JPG/PNG, máx. 5MB)</label>
@@ -781,6 +855,13 @@ function App() {
                   {errors.recaptcha && <span className="text-red-500 text-xs animate-shake ml-2">{errors.recaptcha}</span>}
                 </div>
                 <button type="submit" disabled={loading || blockTime > 0} className={`w-full bg-[#0FAEBF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#32628C] transition duration-300 ${loading || blockTime > 0 ? "opacity-50 cursor-not-allowed" : ""}`}>{loading ? "Enviando..." : "Enviar Mensaje"}</button>
+                {blockTime > 0 && (
+                  <div className="flex items-center justify-center mt-2">
+                    <span className="text-sm text-[#d97706] font-semibold bg-[#fffbe6] px-3 py-2 rounded shadow animate-pulse">
+                      Debes esperar {Math.floor(blockTime / 60000)} minuto(s) y {Math.floor((blockTime % 60000) / 1000)} segundo(s) para enviar otro mensaje.
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-end mt-2">
                   <button type="button" className="text-xs text-[#32628C] underline" onClick={() => setShowHistory(true)}>Ver historial de mensajes enviados</button>
                 </div>
