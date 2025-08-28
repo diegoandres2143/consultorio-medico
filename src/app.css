@@ -26,3 +26,7 @@
 .flip-card-back {
   transform: rotateY(180deg);
 }
+
+.flip-card-front {
+  background-color: #1a202c; /* ejemplo: gris oscuro */
+}

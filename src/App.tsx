@@ -231,9 +231,8 @@ function App() {
             </button>
             {/* Menú principal */}
             <div
-              className={`${
-                isMenuOpen ? "block" : "hidden"
-              } absolute top-full left-0 w-full bg-[#023E73] xl:bg-transparent xl:static xl:block xl:w-auto`}
+              className={`${isMenuOpen ? "block" : "hidden"
+                } absolute top-full left-0 w-full bg-[#023E73] xl:bg-transparent xl:static xl:block xl:w-auto`}
             >
               <ul className="flex flex-col xl:flex-row xl:space-x-3 space-y-2 xl:space-y-0 p-4 xl:p-0">
                 <li>
@@ -414,10 +413,11 @@ function App() {
           {/* Biografía */}
           <section
             id="biografia"
-            className="py-20 bg-[#023E73] text-white mt-20"
-            data-aos="fade-left"
+            className="py-20 bg-[#023E73] text-white mt-20 w-full"
+            style={{ width: '100vw', position: 'relative', left: '50%', right: '50%', marginLeft: '-50vw', marginRight: '-50vw' }}
+            data-aos="fade-up"
           >
-            <div className="container mx-auto px-4">
+            <div className="px-4 md:px-16 mx-0">
               <h2 className="text-3xl font-bold text-center mb-12 text-[#0FAEBF]">
                 Biografía
               </h2>
@@ -463,7 +463,7 @@ function App() {
               <h3 className="text-2xl font-semibold mb-8 text-center text-[#0FAEBF]">
                 Contamos con los siguientes certificados:
               </h3>
-              <div className="mt-12 grid grid-cols-2 gap-6 justify-center items-center">
+              <div className="mt-12 grid grid-cols-2 gap-4 justify-center items-center">
                 {/* Card Certificado RETUS */}
                 <div
                   className="flex flex-col justify-center items-center rounded-xl shadow p-4 w-44 bg-gray-300 mx-auto cursor-pointer hover:scale-105 transition"
@@ -490,17 +490,17 @@ function App() {
                   />
                   <h3 className="text-s font-semibold text-[#023E73] mt-2 text-center">Certificado de ética profesional</h3>
                 </div>
-      {/* Modal para imagen ampliada de certificado */}
-      {certModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={() => setCertModal(null)}>
-          <img
-            src={certModal.src}
-            alt={certModal.alt}
-            className="max-w-lg w-full rounded-xl border-4 border-[#0FAEBF] shadow-2xl bg-white p-2"
-            style={{ boxShadow: "0 0 40px 10px rgba(0,180,255,0.15)" }}
-          />
-        </div>
-      )}
+                {/* Modal para imagen ampliada de certificado */}
+                {certModal && (
+                  <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={() => setCertModal(null)}>
+                    <img
+                      src={certModal.src}
+                      alt={certModal.alt}
+                      className="max-w-lg w-full rounded-xl border-4 border-[#0FAEBF] shadow-2xl bg-white p-2"
+                      style={{ boxShadow: "0 0 40px 10px rgba(0,180,255,0.15)" }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -570,7 +570,7 @@ function App() {
                 >
                   <div className="flip-card-inner w-full h-full">
                     {/* Front Side */}
-                    <div className="flip-card-front">
+                    <div className="flip-card-front ">
                       <h3 className="text-xl font-bold mb-4 text-[#32628C] text-center px-2">
                         {service.title}
                       </h3>
@@ -582,11 +582,11 @@ function App() {
                       <span className="text-[#0FAEBF] text-sm mt-2">Ver detalles</span>
                     </div>
                     {/* Back Side */}
-                    <div className="flip-card-back">
-                      <h3 className="text-xl font-bold mb-4 text-[#0FAEBF] text-left">
+                    <div className="flip-card-back flex flex-col items-center justify-center text-center">
+                      <h3 className="text-xl font-bold mb-4 text-[#0FAEBF] text-center w-full">
                         {service.title}
                       </h3>
-                      <p className="text-base text-left px-4">{description}</p>
+                      <p className="text-base px-4 text-center w-full">{description}</p>
                     </div>
                   </div>
                 </div>
@@ -791,7 +791,7 @@ function App() {
                 </div>
                 <div>
                   <label htmlFor="motivo" className="block text-sm font-medium text-gray-700">Motivo de contacto</label>
-                  <select id="motivo" name="motivo" value={form.motivo} onChange={e => setForm(f => ({ ...f, motivo: e.target.value, otroMotivo: "" }))} className={`w-full px-4 py-2 rounded-lg border ${errors.motivo ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF`}> 
+                  <select id="motivo" name="motivo" value={form.motivo} onChange={e => setForm(f => ({ ...f, motivo: e.target.value, otroMotivo: "" }))} className={`w-full px-4 py-2 rounded-lg border ${errors.motivo ? "border-red-500" : "border-gray-300"} text-gray-800 focus:ring-[#0FAEBF] focus:border-[#0FAEBF`}>
                     <option value="">Selecciona una opción</option>
                     <option value="Consulta médica">Consulta médica</option>
                     <option value="Solicitud de cita">Solicitud de cita</option>
@@ -932,89 +932,63 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer
-        className="bg-gradient-to-b from-[#0FAEBF] to-[#023E73] text-white py-12"
-        data-aos="fade-right"
-      >
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Información de contacto */}
-            <div className="bg-[#023E73] p-4 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold mb-4 text-center">
-                Información de Contacto
-              </h3>
-              <div className="space-y-2 pr-4">
-                <p className="flex items-center">
-                  <Phone className="mr-2 h-5 w-5" />
-                  <a
-                    href="https://wa.me/573002171407"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    +57 300 217 1407
-                  </a>
-                </p>
-                <p className="flex items-center">
-                  <Clock className="mr-2 h-5 w-5" />
-                  <span>
-                    <strong>Lunes a Viernes:</strong> 4:30 PM - 9:00 PM
-                  </span>
-                </p>
-                <p className="flex items-center">
-                  <Clock className="mr-2 h-5 w-5" />
-                  <span>
-                    <strong>Sábado:</strong> 8:00 AM - 6:00 PM
-                  </span>
-                </p>
-                <p className="flex items-center">
-                  <Clock className="mr-2 h-5 w-5" />
-                  <span>
-                    <strong>Domingo:</strong> 9:00 AM - 6:00 PM
-                  </span>
-                </p>
-                <p className="flex items-center">
-                  <Mail className="mr-2 h-5 w-5" />
-                  <a href="mailto:drgarces19022025@hotmail.com">
-                    drgarces19022025@hotmail.com
-                  </a>
-                </p>
+      <footer className="bg-[#1A2536] text-white py-12">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-12">
+            {/* Contacto */}
+            <div className="flex-1 min-w-[220px]">
+              <h3 className="text-xl font-bold mb-4 text-[#0FAEBF] text-center">Contacto</h3>
+              <div className="flex flex-col items-center w-full">
+                <ul className="space-y-2 w-fit text-left">
+                  <li className="flex items-center text-base">
+                    <Phone className="mr-2 h-5 w-5 text-[#0FAEBF]" />
+                    <a href="https://wa.me/573002171407" target="_blank" rel="noopener noreferrer" className="hover:underline text-white">+57 300 217 1407</a>
+                  </li>
+                  <li className="flex items-center text-base">
+                    <Mail className="mr-2 h-5 w-5 text-[#0FAEBF]" />
+                    <a href="mailto:drgarces19022025@hotmail.com" className="hover:underline text-white">drgarces19022025@hotmail.com</a>
+                  </li>
+                </ul>
+              </div>
+              <h4 className="text-lg font-bold mt-6 mb-2 text-[#0FAEBF] text-center">Horarios</h4>
+              <div className="flex flex-col items-center w-full">
+                <ul className="space-y-1 text-base w-fit text-left">
+                  <li className="flex items-center">
+                    <Clock className="mr-2 h-5 w-5 text-[#0FAEBF]" />
+                    <span className="text-white">Lun-Vie: 4:30 PM - 9:00 PM</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Clock className="mr-2 h-5 w-5 text-[#0FAEBF]" />
+                    <span className="text-white">Sábado: 8:00 AM - 6:00 PM</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Clock className="mr-2 h-5 w-5 text-[#0FAEBF]" />
+                    <span className="text-white">Domingo: 9:00 AM - 6:00 PM</span>
+                  </li>
+                </ul>
               </div>
             </div>
-
-            {/* Botones de redes sociales */}
-            <div className="flex flex-col items-end space-y-2 pr-4">
-              <a
-                href="https://www.instagram.com/consultoriomedicodrgarces/"
-                className="hover:text-[#0FAEBF] flex items-center justify-center space-x-2 text-lg px-4 py-2 bg-[#023E73] text-white rounded-md shadow-md hover:bg-white hover:text-[#023E73] transition duration-300 w-1/3"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Instagram className="h-6 w-6" />
-                <span>Instagram</span>
-              </a>
-              <a
-                href="https://m.facebook.com/61573190233989/"
-                className="hover:text-[#0FAEBF] flex items-center justify-center space-x-2 text-lg px-4 py-2 bg-[#023E73] text-white rounded-md shadow-md hover:bg-white hover:text-[#023E73] transition duration-300 w-1/3"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Facebook className="h-6 w-6" />
-                <span>Facebook</span>
-              </a>
-              <a
-                href="mailto:drgarces19022025@hotmail.com"
-                className="hover:text-[#0FAEBF] flex items-center justify-center space-x-2 text-lg px-4 py-2 bg-[#023E73] text-white rounded-md shadow-md hover:bg-white hover:text-[#023E73] transition duration-300 w-1/3"
-              >
-                <Mail className="h-6 w-6" />
-                <span>Correo</span>
-              </a>
+            {/* Redes sociales */}
+            <div className="flex-1 min-w-[220px]">
+              <h3 className="text-xl font-bold mb-4 text-[#0FAEBF] text-center">Síguenos</h3>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <a href="https://www.instagram.com/consultoriomedicodrgarces/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-[#0FAEBF] text-white rounded-full shadow hover:bg-[#32628C] transition">
+                  <Instagram className="h-5 w-5" /> Instagram
+                </a>
+                <a href="https://m.facebook.com/61573190233989/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-[#0FAEBF] text-white rounded-full shadow hover:bg-[#32628C] transition">
+                  <Facebook className="h-5 w-5" /> Facebook
+                </a>
+                <a href="mailto:drgarces19022025@hotmail.com" className="flex items-center gap-2 px-4 py-2 bg-[#0FAEBF] text-white rounded-full shadow hover:bg-[#32628C] transition">
+                  <Mail className="h-5 w-5" /> Correo
+                </a>
+              </div>
             </div>
           </div>
-          <div className="text-center mt-8 pt-8 border-t border-black-700">
-            <p>
-              &copy; 2025 Consultorio Médico - Dr. Garces. Todos los derechos
-              reservados <br />
-              <br /> Elaborado por Diego Andrés Candamil Puerta
+          <div className="text-center mt-8 pt-8">
+        <hr className="border-t border-white mb-6 w-full mx-auto" />
+            <p className="text-m text-gray-200 font-normal">
+              &copy; 2025 Consultorio Médico - Dr. Garces. Todos los derechos reservados.<br />
+              <span className="text-m">Elaborado por Diego Andrés Candamil Puerta</span>
             </p>
           </div>
         </div>
