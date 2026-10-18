@@ -39,6 +39,7 @@ import {
   Instagram,
   Facebook,
   ChevronDown,
+  MapPin,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import AOS from "aos";
@@ -947,6 +948,18 @@ function App() {
                   <li className="flex items-center text-base">
                     <Mail className="mr-2 h-5 w-5 text-[#0FAEBF]" />
                     <a href="mailto:drgarces19022025@hotmail.com" className="hover:underline text-white">drgarces19022025@hotmail.com</a>
+                  </li>
+                  {/* Nueva línea para la dirección */}
+                  <li className="flex items-center text-base">
+                    <MapPin className="mr-2 h-5 w-5 text-[#0FAEBF] flex-shrink-0" />
+                    <a 
+                      href="https://maps.google.com/?q=Avenida+33+%2357-29,+Barrio+Niquía" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="hover:underline text-white"
+                    >
+                      Avenida 33 #57-29, Barrio Niquía
+                    </a>
                   </li>
                 </ul>
               </div>
