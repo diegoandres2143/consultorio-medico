@@ -314,7 +314,7 @@ function App() {
                 Servimos con Dignidad y Honestidad.
               </p>
               <a
-                href="https://wa.me/573002171407"
+                href="https://wa.me/573217528622"
                 className="inline-block bg-[#0FAEBF] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#32628C] transition duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -670,7 +670,7 @@ function App() {
                 </div>
                 <div className="flex items-center justify-center w-full">
                   <a
-                    href="https://wa.me/573002171407"
+                    href="https://wa.me/573217528622"
                     className="flex items-center bg-[#0FAEBF] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#32628C] transition duration-300 text-lg"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -943,7 +943,7 @@ function App() {
                 <ul className="space-y-2 w-fit text-left">
                   <li className="flex items-center text-base">
                     <Phone className="mr-2 h-5 w-5 text-[#0FAEBF]" />
-                    <a href="https://wa.me/573002171407" target="_blank" rel="noopener noreferrer" className="hover:underline text-white">+57 300 217 1407</a>
+                    <a href="https://wa.me/573217528622" target="_blank" rel="noopener noreferrer" className="hover:underline text-white">+57 321 752 8622</a>
                   </li>
                   <li className="flex items-center text-base">
                     <Mail className="mr-2 h-5 w-5 text-[#0FAEBF]" />
@@ -1009,7 +1009,7 @@ function App() {
 
       {/* Floating WhatsApp Button */}
       <a
-        href="https://wa.me/573002171407"
+        href="https://wa.me/573217528622"
         className="fixed bottom-4 right-4 bg-[#0FAEBF] text-white px-4 py-3 rounded-full flex items-center space-x-2 shadow-lg hover:bg-[#32628C] transition duration-300"
         target="_blank"
         rel="noopener noreferrer"
