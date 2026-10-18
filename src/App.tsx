@@ -464,10 +464,13 @@ function App() {
               <h3 className="text-2xl font-semibold mb-8 text-center text-[#0FAEBF]">
                 Contamos con los siguientes certificados:
               </h3>
-              <div className="mt-12 grid grid-cols-2 gap-4 justify-center items-center">
+              
+              {/* Contenedor modificado para centrar y espaciar 3 elementos */}
+              <div className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 items-start">
+                
                 {/* Card Certificado RETUS */}
                 <div
-                  className="flex flex-col justify-center items-center rounded-xl shadow p-4 w-44 bg-gray-300 mx-auto cursor-pointer hover:scale-105 transition"
+                  className="flex flex-col justify-center items-center rounded-xl shadow p-4 w-44 bg-gray-300 cursor-pointer hover:scale-105 transition"
                   onClick={() => setCertModal({ src: "/RETUS.png", alt: "Certificado RETUS" })}
                 >
                   <img
@@ -478,9 +481,10 @@ function App() {
                   />
                   <h3 className="text-s font-semibold text-[#023E73] mt-2 text-center">Registro en el Rethus</h3>
                 </div>
+
                 {/* Card Certificado Ética */}
                 <div
-                  className="flex flex-col justify-center items-center rounded-xl shadow p-4 w-44 bg-gray-300 mx-auto cursor-pointer hover:scale-105 transition"
+                  className="flex flex-col justify-center items-center rounded-xl shadow p-4 w-44 bg-gray-300 cursor-pointer hover:scale-105 transition"
                   onClick={() => setCertModal({ src: "/etica.png", alt: "Certificado de ética profesional" })}
                 >
                   <img
@@ -491,6 +495,21 @@ function App() {
                   />
                   <h3 className="text-s font-semibold text-[#023E73] mt-2 text-center">Certificado de ética profesional</h3>
                 </div>
+
+                {/* NUEVO Card Certificado Derecho Médico */}
+                <div
+                  className="flex flex-col justify-center items-center rounded-xl shadow p-4 w-44 bg-gray-300 cursor-pointer hover:scale-105 transition"
+                  onClick={() => setCertModal({ src: "/diploma-derecho.png", alt: "Diploma Derecho Médico" })}
+                >
+                  <img
+                    src="/derechoMedico.png"
+                    alt="Diploma Derecho Médico"
+                    className="w-16 h-16 object-contain rounded mb-2 mx-auto"
+                    style={{ border: "none" }}
+                  />
+                  <h3 className="text-s font-semibold text-[#023E73] mt-2 text-center">Diploma Derecho Médico</h3>
+                </div>
+
                 {/* Modal para imagen ampliada de certificado */}
                 {certModal && (
                   <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={() => setCertModal(null)}>
