@@ -454,8 +454,11 @@ function App() {
                       - Universidad Cooperativa de Colombia
                     </li>
                     <li>
-                      Especialista en Derecho Médico (En Curso) - Universidad
+                      Especialista en Derecho Médico - Universidad
                       Cooperativa de Colombia
+                    </li>
+                    <li>
+                      Especialista en Medicina Estética Facial y Corporal- Escuela Dr. Amin Ariza
                     </li>
                   </ul>
                 </div>
