@@ -307,7 +307,7 @@ function App() {
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 space-y-6">
               <h1 className="text-3xl md:text-5xl font-bold">
-                Consultorio Médico <br /> Dr. Garces
+                Dr. Garcés | Consultorio Médico
               </h1>
               <p className="text-xl italic">
                 Servimos con Dignidad y Honestidad.
